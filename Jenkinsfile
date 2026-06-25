@@ -11,20 +11,28 @@ pipeline {
             }
             steps {
                 sh '''
-                   file="${WORKSPACE}/build/index.html"
-                   
-                   if [ -f "$file" ]; then
-                        echo "File ${file} is present "
-                   else 
-                       echo "File ${file} is not present "
-                    fi
-
+                    ls -la
                     node --version 
                     npm --version 
                     npm ci 
-                    npm test
+                    npm run build
+                    ls -la
                 '''
             }
+        }
+        stage('Test') {
+            steps {
+                sh '''
+                    file="${WORKSPACE}/build/index.html"
+                   
+                    if [ -f "$file" ]; then
+                        echo "File ${file} is present "
+                    else 
+                        echo "File ${file} is not present "
+                    fi
+                '''
+            }
+
         }
     }
 }
