@@ -2,24 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true  
-                } 
-            }
+        stage('Fileexist or not') {
             steps {
                 sh '''
-                    ls -la 
-                    node --version 
-                    npm --version 
-                    npm ci 
-                    npm run build
-                    la -la
+                   file="${WORKSPACE}/build/index.html"
+                   
+                   if [ -f "$file" ]; then
+                        echo "File ${file} is present "
+                   else 
+                       echo "File ${file} is not present "
+                    fi
                 '''
             }
         }
     }
 }
- 
