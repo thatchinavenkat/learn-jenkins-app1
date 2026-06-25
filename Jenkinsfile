@@ -21,6 +21,12 @@ pipeline {
             }
         }
         stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true  
+                } 
+            }
             steps {
                 sh '''
                     file="${WORKSPACE}/build/index.html"
@@ -30,6 +36,7 @@ pipeline {
                     else 
                         echo "File ${file} is not present "
                     fi
+                    npm test
                 '''
             }
 
